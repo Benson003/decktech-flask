@@ -20,7 +20,7 @@ class Careers(MethodView):
             return render_template("others.html")
         
         elif "" == link_type:
-            return render_template("carreers.html")
+            return render_template("careers.html")
         
         else:
             return 404
@@ -39,6 +39,9 @@ class Resources(MethodView):
             return render_template("new_updates.html")
         
         elif "events" == link_type:
+            return render_template("events.html")
+        
+        elif "community" == link_type:
             return render_template("community.html")
         
         elif "academy" == link_type:
@@ -46,6 +49,7 @@ class Resources(MethodView):
         
         elif "partners" == link_type:
             return render_template("partners.html")
+        
         elif "" == link_type:
             return render_template("resources.html")
         else:
