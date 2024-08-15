@@ -2,13 +2,14 @@ from flask.views import MethodView
 from flask import render_template
 from flask import abort
 
+
 class Careers(MethodView):
 
     def get(self,link_type=None):
         if link_type is None:
             return render_template("careers.html")
 
-        link_type = link_type.rstrip('/')
+        link_type = link_type.rstrip("/")
 
         if link_type == "internship":
             return render_template("internship.html")
@@ -38,7 +39,7 @@ class Resources(MethodView):
         if link_type is None:
             return render_template("resources.html")
 
-        link_type = link_type.rstrip('/')
+        link_type = link_type.rstrip("/")
 
         if link_type == "blog":
             return render_template("blog.html")

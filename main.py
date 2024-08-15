@@ -5,6 +5,9 @@ import class_views as cl
 #Initalises the Flask App
 app = Flask(__name__)
 
+with open('app.key') as lock:
+    app.secret_key = lock
+
 #Made a few routes form some links
 
 @app.route("/")#The landing page
@@ -32,4 +35,4 @@ app.add_url_rule("/resources/",view_func=cl.Resources.as_view('resources_base'))
 app.add_url_rule("/resources/<string:link_type>",view_func=cl.Resources.as_view('resources_links'))#The dynmic link system for the resources section
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
