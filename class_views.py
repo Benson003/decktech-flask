@@ -1,59 +1,67 @@
 from flask.views import MethodView
 from flask import render_template
+from flask import abort
 
 class Careers(MethodView):
 
-    def get(self,link_type):
-        if "internship" == link_type:
+    def get(self,link_type=None):
+        if link_type is None:
+            return render_template("careers.html")
+
+        link_type = link_type.rstrip('/')
+
+        if link_type == "internship":
             return render_template("internship.html")
         
-        elif "remote" == link_type:
+        elif link_type == "remote":
             return render_template("remote.html")
          
-        elif "hybrid" == link_type:
+        elif link_type == "hybrid":
             return render_template("hybrid.html")
         
-        elif "on-site" == link_type:
+        elif link_type == "on-site":
             return render_template("on-site.html")
         
-        elif "others" == link_type:
+        elif link_type == "others":
             return render_template("others.html")
         
-        elif "" == link_type:
-            return render_template("careers.html")
-        
         else:
-            return 404
+             return abort(404)
+        
+    
+       
         
 
 class Resources(MethodView):
 
-    def get(self,link_type):
-        if "blog" == link_type:
+    def get(self,link_type=None):
+        if link_type is None:
+            return render_template("resources.html")
+
+        link_type = link_type.rstrip('/')
+
+        if link_type == "blog":
             return render_template("blog.html")
         
-        elif "documentations" == link_type:
+        elif link_type == "documentations":
             return render_template("documetations.html")
         
-        elif "news_updates" == link_type:
+        elif link_type == "new_updates":
             return render_template("new_updates.html")
         
-        elif "events" == link_type:
+        elif link_type == "events":
             return render_template("events.html")
         
-        elif "community" == link_type:
+        elif link_type == "community":
             return render_template("community.html")
         
-        elif "academy" == link_type:
+        elif link_type == "academy":
             return render_template("academy.html")
         
-        elif "partners" == link_type:
+        elif link_type == "partners":
             return render_template("partners.html")
-        
-        elif "" == link_type:
-            return render_template("resources.html")
         else:
-            return 404
+             return abort(404)
         
 
 if __name__ == "__main__":
