@@ -16,5 +16,12 @@ class Employee(db.Model):
 class Blog(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     title =  db.Column(db.String(40))
-    content =  db.Column(db.String(1000))
+    content =  db.Column(db.String(500))
     employee_id = db.Column(db.Integer,db.ForeignKey('employee.id'))
+
+
+class Projects(db.Model):
+    id = db.Column(db.Integer,primary_key = True)
+    title = db.Column(db.String(80))
+    content = db.Column(db.String(500))
+    #Remember to add the image file link

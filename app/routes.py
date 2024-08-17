@@ -23,6 +23,7 @@ def register_routes(app):
     @app.route("/contactUs/")#The contact us
     def  contactUs():
         return render_template("contactUs.html")
+
     app.add_url_rule("/careers/",view_func=cl.Careers.as_view('career_base'))
     app.add_url_rule("/careers/<string:link_type>",view_func=cl.Careers.as_view('career_type'))#The dynamic link system for careers section
     app.add_url_rule("/resources/",view_func=cl.Resources.as_view('resources_base'))
