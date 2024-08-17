@@ -1,3 +1,6 @@
 /decktech_site/
 /__pycache__/
 /app.key
+/app/__pycache__
+/instance/
+/migrations/

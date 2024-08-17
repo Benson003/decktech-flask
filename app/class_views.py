@@ -1,6 +1,8 @@
 from flask.views import MethodView
 from flask import render_template
 from flask import abort
+from app import db
+from app import models
 
 
 class Careers(MethodView):
