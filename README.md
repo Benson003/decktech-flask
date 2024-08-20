@@ -1,4 +1,4 @@
-To make sure this project runs Doe these commands first
+To make sure this project runs Do these commands first
 
 Set the Flask Enviroment Variables
 
