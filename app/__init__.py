@@ -18,11 +18,11 @@ def create_app():
     migrate.init_app(app,db)
 
 
-    from app import routes
+    from routes import routes
     routes.register_routes(app)
     
     with app.app_context():
-        from app import models
+        from models import models
 
 
     return app

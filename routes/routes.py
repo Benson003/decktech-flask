@@ -1,7 +1,6 @@
 from flask import render_template
-from app import class_views as cl
-from app import db
-from app import models   
+from routes import class_views as cl
+from models import models
 
 def register_routes(app):
     @app.route("/")#The landing page
