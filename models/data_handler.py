@@ -3,11 +3,11 @@ from app import db
 import bcrypt
 class User():
 
-    def get_all_users():
+    def get_all_users(self):
         models.User.query.all()
 
 
-    def get_specfic_user(id):
+    def get_specfic_user(self,id):
         models.User.query.filter(models.User.id == id)
 
     
@@ -33,3 +33,16 @@ class User():
 
 class Blog():
     pass
+
+class Projects():
+    def read_all_projects(self):
+        models.Projects.query.all()
+
+    def read_spefic_project(self,id):
+        models.Projects.query.filter(models.Projects.id == id)
+
+    def create_project(self,title,content):
+        project = models.Projects(title=title,content=content)
+
+        db.session.add(project)
+        db.session.commit()
