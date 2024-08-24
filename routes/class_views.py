@@ -39,6 +39,7 @@ class Resources(MethodView):
         link_type = link_type.rstrip("/")
 
         if link_type == "blog":
+            
             return render_template("./main_pages/resources_pages/blog.html")
         
         elif link_type == "documentations":

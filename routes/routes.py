@@ -1,12 +1,13 @@
 from flask import render_template
 from routes import class_views as cl
 from models import models
+from models import data_handler as dl
 
 def register_routes(app):
     @app.route("/")#The landing page
     def index():
         return render_template("./main_pages/index.html")
-
+    
     @app.route("/aboutUs/")#The about us page
     def aboutUs():
         return render_template("./main_pages/aboutUs.html")
