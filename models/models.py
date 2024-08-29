@@ -20,8 +20,7 @@ class User(db.Model):
         self.bio = bio
         self.password = password
 
-    def __repr__(self):
-        return f"{self.username} first_name:{self.first_name} last_name:{self.last_name}"
+
 
 class Blog(db.Model):
     id = db.Column(db.Integer,primary_key = True)
@@ -34,8 +33,7 @@ class Blog(db.Model):
         self.content = content
         self.user_id = user_id
 
-    def __repr__(self):
-        return f"id:{ self.id }Blog Post:{ self.title }"
+
 
 class Projects(db.Model):
     id = db.Column(db.Integer,primary_key = True)
@@ -48,8 +46,7 @@ class Projects(db.Model):
         self.title = title
         self.content = content
 
-    def __repr__(self):
-        return f"id:{self.id} , title:{self.title} ,content:{self.content}"
+
     
 
 class JobType(enum.Enum):
@@ -70,6 +67,5 @@ class Applicants(db.Model):
         self.fullname = fullname
         self.role = role
 
-    def __repr__(self):
-        return f"Fullname: {self.fullname} , Role:{self.role} "
+
     

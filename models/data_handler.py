@@ -10,7 +10,7 @@ class User():
 
 
     def get_specfic_user(self,id):
-        models.User.query.filter(models.User.id == id)
+        models.User.query.filter(models.User.id == id).first()
 
     
     def create_user(self,username,first_name,last_name,bio,password): 
@@ -54,14 +54,13 @@ class Blog():
             db.session.rollback()
 
     def delete_specfic_blog(self,id):
-        blog = models.Blog.query.filter(models.Blog.id == id) 
+        blog = models.Blog.query.filter(models.Blog.id == id).first() 
         try:
             db.session.delete(blog)       
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            return f"Failed delete procdure.\n 
-                    Possible Reason:{e}"
+            return f"Failed delete procdure.\n Possible Reason:{e}"
 
 
 
@@ -85,16 +84,14 @@ class Projects():
 
         except Exception as e:
             db.session.rollback()
-            return f"Failed add procdure. \n 
-                    Possible Resason:{e}"
+            return f"Failed add procdure. \n Possible Resason:{e}"
             
     def delete_specfic_project(self,id):
-        blog = models.Blog.query.filter(models.Blog.id == id)
+        blog = models.Blog.query.filter(models.Blog.id == id).first()
          
         try:
             db.session.delete(blog)       
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            return f"Failed delete procdure.\n 
-                    Possible Reason:{e}"
+            return f"Failed delete procdure.\n Possible Reason:{e}"
