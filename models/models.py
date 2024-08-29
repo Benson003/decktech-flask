@@ -50,7 +50,7 @@ class Projects(db.Model):
     
 
 class JobType(enum.Enum):
-
+    
     INTERNSHIP = "Internship"
     ON_SITE = "On-Site"
     REMOTE = "Remote"

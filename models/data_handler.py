@@ -95,3 +95,56 @@ class Projects():
         except Exception as e:
             db.session.rollback()
             return f"Failed delete procdure.\n Possible Reason:{e}"
+
+
+
+
+
+
+class Applicants():
+
+
+    def add_applicant(self,fullname, role):
+        try:
+            role_enum = models.JobType[role.upper().replace(" ", "_")]
+        except KeyError:
+            raise ValueError("Invalid job type provided")
+
+        applicant = Applicants(fullname=fullname, role=role_enum)
+        db.session.add(applicant)
+        db.session.commit()
+        return applicant
+
+
+    def get_applicant_by_id(self,applicant_id):
+        return Applicants.query.get(applicant_id)
+
+
+    def get_all_applicants(self):
+        return Applicants.query.all()
+
+
+    def update_applicant(self,applicant_id, fullname=None, role=None):
+        applicant = Applicants.query.get(applicant_id)
+        if not applicant:
+            raise ValueError("Applicant not found")
+
+        if fullname:
+            applicant.fullname = fullname
+        if role:
+            try:
+                applicant.role = models.JobType[role.upper().replace(" ", "_")]
+            except KeyError:
+                raise ValueError("Invalid job type provided")
+
+        db.session.commit()
+        return applicant
+
+
+    def delete_applicant(self,applicant_id):
+        applicant = Applicants.query.get(applicant_id)
+        if not applicant:
+            raise ValueError("Applicant not found")
+
+        db.session.delete(applicant)
+        db.session.commit()
