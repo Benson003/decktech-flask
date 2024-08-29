@@ -4,64 +4,46 @@ from flask import abort
 from models import models
 
 
+career_templates =  {
+            None:"./main_pages/careers_pages/careers.html",
+            "internship":"./main_pages/careers_pages/internship.html",
+            "remote":"./main_pages/careers_pages/remote.html",
+            "hybrid":"./main_pages/careers_pages/hybrid.html",
+            "on-site":"./main_pages/careers_pages/on-site.html",
+            "others":"./main_pages/careers_pages/others.html",
+        }
+
+resources_templates = {
+            None:"./main_pages/resources_pages/resources.html",
+            "blog":"./main_pages/resources_pages/blog.html",
+            "documentations":"./main_pages/resources_pages/documetations.html",
+            "new_updates":"./main_pages/resources_pages/new_updates.html",
+            "events":"./main_page/resources_pages/events.html",
+            "community":"./main_pages/resources_pages/community.html",
+            "academy":"./main_pages/resources_pages/academy.html",
+            "partners":"./main_pages/resources_pages/partners.html"
+        }
+
+
+
 class Careers(MethodView):
 
     def get(self,link_type=None):
-        if link_type is None:
-            return render_template("./main_pages/careers_pages/careers.html")
+        templates =career_templates
+        link_type = link_type.strip().lower().rstrip("/") if link_type else None
+        template = templates.get(link_type)
 
-        link_type = link_type.rstrip("/")
-
-        if link_type == "internship":
-            return render_template("./main_pages/career_pages/internship.html")
+        return render_template(template) if template else abort(404)
         
-        elif link_type == "remote":
-            return render_template("./main_pages/career_pages/remote.html")
-         
-        elif link_type == "hybrid":
-            return render_template("./main_pages/career_pages/hybrid.html")
-        
-        elif link_type == "on-site":
-            return render_template("./main_pages/career_pages/on-site.html")
-        
-        elif link_type == "others":
-            return render_template("./main_pages/career_pages/others.html")
-        
-        else:
-             return abort(404)
-
+    
 class Resources(MethodView):
 
     def get(self,link_type=None):
-        if link_type is None:
-            return render_template("./main_pages/resources_pages/resources.html")
-
-        link_type = link_type.rstrip("/")
-
-        if link_type == "blog":
-            
-            return render_template("./main_pages/resources_pages/blog.html")
-        
-        elif link_type == "documentations":
-            return render_template("./main_pages/resources_pages/documetations.html")
-        
-        elif link_type == "new_updates":
-            return render_template("./main_pages/resources_pages/new_updates.html")
-        
-        elif link_type == "events":
-            return render_template("./main_page/resources_pages/events.html")
-        
-        elif link_type == "community":
-            return render_template("./main_pages/career_pages/community.html")
-        
-        elif link_type == "academy":
-            return render_template("./main_pages/career_pages/academy.html")
-        
-        elif link_type == "partners":
-            return render_template("./main_pages/career_pages/partners.html")
-        else:
-             return abort(404)
-        
+       
+        templates = resources_templates
+        link_type = link_type.strip().lower().rstrip("/")if link_type else None
+        template = templates.get(link_type)
+        return render_template(template)if template else abort(404)
 
 if __name__ == "__main__":
     pass
