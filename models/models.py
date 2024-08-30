@@ -51,11 +51,12 @@ class Projects(db.Model):
 
 class JobType(enum.Enum):
     
-    INTERNSHIP = "Internship"
-    ON_SITE = "On-Site"
-    REMOTE = "Remote"
-    HYBRID = "Hybrid"
-    OTHERS = "Others"
+    INTERNSHIP = "INTRENSHIP"
+    ONSITE = "ONSITE"
+    REMOTE = "REMOTE"
+    HYBRID = "HYBRID"
+    OTHERS = "OTHERS"
+
 
 class Applicants(db.Model):
 

@@ -110,10 +110,9 @@ class Applicants():
         except KeyError:
             raise ValueError("Invalid job type provided")
 
-        applicant = Applicants(fullname=fullname, role=role_enum)
+        applicant = models.Applicants(fullname=fullname, role=role_enum)
         db.session.add(applicant)
         db.session.commit()
-        return applicant
 
 
     def get_applicant_by_id(self,applicant_id):

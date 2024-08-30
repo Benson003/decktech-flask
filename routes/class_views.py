@@ -1,12 +1,15 @@
 from flask.views import MethodView
-from flask import render_template, request
+from flask import redirect
+from flask import render_template
+from flask import request
+from flask import url_for
 from flask import abort
 from models import data_handler as dl
 
 
 career_templates =  {
             None:"./main_pages/careers_pages/careers.html",
-            **{t: f"main_pages/careers_pages/{t}.html" for t in ["internship", "remote", "hybrid", "on-site", "others"]}
+            **{t: f"main_pages/careers_pages/{t}.html" for t in ["internship", "remote", "hybrid", "onsite", "others","thank_you"]}
         }
 
 resources_templates = {
@@ -32,7 +35,7 @@ class Careers(MethodView):
             "internship":self.handleIntership,
             "remote":self.handleRemote,
             "hybrid":self.handleHybrid,
-            "on-site":self.handleOnsite,
+            "onsite":self.handleOnsite,
             "others":self.handleOthers,
             }
         
@@ -41,23 +44,29 @@ class Careers(MethodView):
     
     def handleIntership(self,fullname,role):
         applicants = dl.Applicants()
-        applicants.add_applicant(fullname=fullname,role="Intership")
+        applicants.add_applicant(fullname=fullname,role="internship")
+        return redirect(url_for("career_type",link_type="thank_you"))
     
     def handleRemote(self,fullname,role):
         applicants = dl.Applicants()
-        applicants.add_applicant(fullname=fullname,role="Remote")
+        applicants.add_applicant(fullname=fullname,role="remote")
+        return redirect(url_for("career_type",link_type="thank_you"))
 
     def handleHybrid(self,fullname,role):
         applicants = dl.Applicants()
-        applicants.add_applicant(fullname=fullname,role="Hybrid")
+        applicants.add_applicant(fullname=fullname,role="hybrid")
+        return redirect(url_for("career_type",link_type="thank_you"))
 
     def handleOnsite(self,fullname,role):
         applicants = dl.Applicants()
-        applicants.add_applicant(fullname=fullname,role="On-Site")
+        applicants.add_applicant(fullname=fullname,role="onsite")
+        return redirect(url_for("career_type",link_type="thank_you"))
 
     def handleOthers(self,fullname,role):
         applicants = dl.Applicants()
-        applicants.add_applicant(fullname=fullname,role="Others")
+        applicants.add_applicant(fullname=fullname,role="others")
+        return redirect(url_for("career_type",link_type="thank_you"))
+        
     
 class Resources(MethodView):
 

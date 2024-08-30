@@ -1,0 +1,16 @@
+.message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Light grey background */
+  }
+  
+  .message-box {
+    padding: 20px;
+    background-color: #d3d3d3; /* Light grey background */
+    border-radius: 20px; /* Rounded corners */
+    text-align: center; /* Center text */
+    box-shadow: 2px 2px #888888; /* Shadow effect */
+    font-size: 1.5em; /* Larger text */
+  }

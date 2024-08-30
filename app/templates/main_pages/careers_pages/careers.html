@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.career.main.css') }}">
+</head>
+<body>
+
+<div class="grid-container">
+    <a href="{{ url_for('career_type',link_type="onsite")}}" class="grid-item">On-Site</a>
+    <a href="{{ url_for('career_type',link_type="internship")}}" class="grid-item">Internship</a>
+    <a href="{{ url_for('career_type',link_type="hybrid")}}" class="grid-item">Hybrid</a>
+    <a href="{{ url_for('career_type',link_type="remote")}}" class="grid-item">Remote</a>
+    <a href="{{ url_for('career_type',link_type="others")}}" class="grid-item">Others</a>
+</div>
+<a href={{ url_for('index')}}>Home</a>
+</body>
+</html>
