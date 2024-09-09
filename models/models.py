@@ -13,11 +13,10 @@ class User(db.Model):
     blog = db.relationship('Blog', backref = "user")
 
 
-    def __init__(self,username,first_name,last_name,bio,password=None):
+    def __init__(self,username,first_name,last_name,password=None):
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
-        self.bio = bio
         self.password = password
 
 

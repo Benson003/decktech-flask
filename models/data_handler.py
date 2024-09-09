@@ -9,23 +9,28 @@ class User():
         return models.User.query.all()
 
 
-    def get_specfic_user(self,id):
-        return models.User.query.filter(models.User.id == id).first()
+    def get_specfic_user(self,username):
+        return models.User.query.filter(models.User.username == username).first()
 
-    
-    def create_user(self,username,first_name,last_name,bio,password): 
+    def paswword_hashing(self,password):
         gen_salt = bcrypt.gensalt()
 
         encoded_password = password.encode('utf_8')
 
         hashed_password = bcrypt.hashpw(encoded_password,gen_salt)
 
+        return hashed_password
+
+
+    
+    def create_user(self,username,first_name,last_name,password): 
+      
+        hashed_password = self.paswword_hashing(password=password)
 
         person = models.User(
                             username=username,
                              first_name=first_name,
                              last_name=last_name,
-                             bio=bio,
                              password=hashed_password
                              )
         
