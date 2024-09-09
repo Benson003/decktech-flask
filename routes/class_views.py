@@ -5,6 +5,8 @@ from flask import request
 from flask import url_for
 from flask import abort
 from models import data_handler as dl
+from app import session
+from models.data_handler import bcrypt
 
 
 career_templates =  {
@@ -15,6 +17,11 @@ career_templates =  {
 resources_templates = {
             None:"./main_pages/resources_pages/resources.html",
             **{t: f"main_pages/resources_pages/{t}.html" for t in ["blog", "documentations", "new_updates", "events", "community","academy","partners"]}
+        }
+
+admin_templates = {
+            None:"./admin/index.html",
+            **{t: f"./admin/{t}.html" for t in ["login","signupadmin"]}
         }
 
 class Careers(MethodView):
@@ -76,6 +83,56 @@ class Resources(MethodView):
         link_type = link_type.strip().lower().rstrip("/")if link_type else None
         template = templates.get(link_type)
         return render_template(template)if template else abort(404)
+
+
+class Admin(MethodView):
+
+    def get(self, link_type=None):
+        # Debugging output
+        print(f"Session username: {session.get('username')}")
+        print(f"Received link_type: '{link_type}'")
+
+
+
+        # Redirect to login if user is not signed in and link_type is "index"
+        if session.get("username") is None and link_type == None:
+            print("Redirecting to login")
+            return redirect(url_for("admin_links", link_type="login"))
+
+        # Process link_type and render the appropriate template
+        templates = admin_templates
+        link_type = link_type.strip().lower().rstrip("/") if link_type else None
+        template = templates.get(link_type)
+        return render_template(template) if template else abort(404)
+
+    def post(self, link_type=None):
+        # Debugging output
+        print(f"Received link_type: {link_type}")
+        form_data = request.form.to_dict()
+
+        if link_type == "signupadmin":
+            # Create a new user
+            dl.User().create_user(**form_data)
+            return redirect(url_for("admin_links", link_type="login"))
+
+        elif link_type == "login":
+            # Attempt to log in the user
+            user = dl.User().get_specfic_user(form_data['username'])
+            password = form_data["password"].encode('utf-8')
+            verify = bcrypt.checkpw(password, user.password)
+
+            if verify:
+                # Set the session for the logged-in user
+                session['username'] = user.username
+                print(f"Logged in as: {user.username}")
+                return redirect(url_for("admin_links",link_type="/"))
+            else:
+                print(f"Password or username incorrect. Provided password: {password}, Stored password: {user.password}")
+                return redirect(url_for("admin_links", link_type="login"))
+
+        else:
+            abort(404)
+
 
 if __name__ == "__main__":
     pass
