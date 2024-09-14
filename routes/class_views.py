@@ -21,7 +21,7 @@ resources_templates = {
 
 admin_templates = {
             None:"./admin/index.html",
-            **{t: f"./admin/{t}.html" for t in ["login","signupadmin"]}
+            **{t: f"./admin/{t}.html" for t in ["login","signupadmin","logout"]}
         }
 
 class Careers(MethodView):
@@ -31,7 +31,7 @@ class Careers(MethodView):
         link_type = link_type.strip().lower().rstrip("/") if link_type else None
         template = templates.get(link_type)
         return render_template(template) if template else abort(404)
-    
+
     def post(self,link_type):
         link_type = link_type.strip().lower().rstrip("/") if link_type else None
         form_data = request.form.to_dict()
@@ -45,15 +45,15 @@ class Careers(MethodView):
             "onsite":self.handleOnsite,
             "others":self.handleOthers,
             }
-        
+
         handler = handlers.get(link_type, lambda *args: abort(404))
         return handler(fullname , role)
-    
+
     def handleIntership(self,fullname,role):
         applicants = dl.Applicants()
         applicants.add_applicant(fullname=fullname,role="internship")
         return redirect(url_for("career_type",link_type="thank_you"))
-    
+
     def handleRemote(self,fullname,role):
         applicants = dl.Applicants()
         applicants.add_applicant(fullname=fullname,role="remote")
@@ -73,12 +73,12 @@ class Careers(MethodView):
         applicants = dl.Applicants()
         applicants.add_applicant(fullname=fullname,role="others")
         return redirect(url_for("career_type",link_type="thank_you"))
-        
-    
+
+
 class Resources(MethodView):
 
     def get(self,link_type=None):
-        
+
         templates = resources_templates
         link_type = link_type.strip().lower().rstrip("/")if link_type else None
         template = templates.get(link_type)
@@ -108,30 +108,51 @@ class Admin(MethodView):
     def post(self, link_type=None):
         # Debugging output
         print(f"Received link_type: {link_type}")
-        form_data = request.form.to_dict()
+        self.form_data = request.form.to_dict()
+        print(self.form_data)
 
-        if link_type == "signupadmin":
-            # Create a new user
-            dl.User().create_user(**form_data)
-            return redirect(url_for("admin_links", link_type="login"))
+        handlers = {
+            "signupadmin":self.signupadmin,
+            "login":self.login,
+            "logout":self.logout,
+            }
+        handler = handlers.get(link_type)
+        return handler()
 
-        elif link_type == "login":
-            # Attempt to log in the user
-            user = dl.User().get_specfic_user(form_data['username'])
-            password = form_data["password"].encode('utf-8')
+    def signupadmin(self):
+        dl.User().create_user(**self.form_data)
+        return redirect(url_for("admin_links", link_type="login"))
+
+    def login(self):
+        users = dl.User().get_all_users()
+        usernames = []
+
+        for user in users:
+            usernames.append(user.username)
+
+        print(usernames)
+        print(user)
+
+        if self.form_data['username'] in usernames:
+            user = dl.User().get_specfic_user(self.form_data['username'])
+            password = self.form_data["password"].encode('utf-8')
             verify = bcrypt.checkpw(password, user.password)
-
-            if verify:
+            if verify == True:
                 # Set the session for the logged-in user
                 session['username'] = user.username
                 print(f"Logged in as: {user.username}")
                 return redirect(url_for("admin_links",link_type="/"))
             else:
-                print(f"Password or username incorrect. Provided password: {password}, Stored password: {user.password}")
+                print("Password incorrect.")
                 return redirect(url_for("admin_links", link_type="login"))
-
         else:
-            abort(404)
+            print("Username not found")
+            return redirect(url_for("admin_links",link_type= "login"))
+
+    def logout(self):
+        session.pop()
+        return render_template("admin/logout.html")
+
 
 
 if __name__ == "__main__":

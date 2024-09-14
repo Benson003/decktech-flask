@@ -22,9 +22,9 @@ class User():
         return hashed_password
 
 
-    
-    def create_user(self,username,first_name,last_name,password): 
-      
+
+    def create_user(self,username,first_name,last_name,password):
+
         hashed_password = self.paswword_hashing(password=password)
 
         person = models.User(
@@ -33,7 +33,7 @@ class User():
                              last_name=last_name,
                              password=hashed_password
                              )
-        
+
         db.session.add(person)
         db.session.commit()
 
@@ -46,10 +46,12 @@ class Blog():
         blogs = models.Blog.query.all()
         return blogs
 
+
+
     def read_specfic_blog(self,id):
         blog = models.Blog.query.filter(models.Blog.id == id).first()
         return blog
-    
+
     def create_blog(self,title,content,user_id):
         blog = models.Blog(title=title,content=content,user_id=user_id)
         try:
@@ -59,9 +61,9 @@ class Blog():
             db.session.rollback()
 
     def delete_specfic_blog(self,id):
-        blog = models.Blog.query.filter(models.Blog.id == id).first() 
+        blog = models.Blog.query.filter(models.Blog.id == id).first()
         try:
-            db.session.delete(blog)       
+            db.session.delete(blog)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
@@ -73,6 +75,7 @@ class Projects():
     def __init__(self):
         pass
 
+
     def read_all_projects(self):
         return models.Projects.query.all()
 
@@ -82,7 +85,7 @@ class Projects():
 
     def create_project(self,title,content):
         project = models.Projects(title=title,content=content)
-        
+
         try:
             db.session.add(project)
             db.session.commit()
@@ -90,12 +93,12 @@ class Projects():
         except Exception as e:
             db.session.rollback()
             print(f"Failed add procdure. \n Possible Resason:{e}")
-            
+
     def delete_specfic_project(self,id):
         blog = models.Blog.query.filter(models.Blog.id == id).first()
-         
+
         try:
-            db.session.delete(blog)       
+            db.session.delete(blog)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
@@ -119,6 +122,8 @@ class Applicants():
         db.session.add(applicant)
         db.session.commit()
 
+    def get_specfic_fields(self,*fields):
+        return models.Applicants.query.with_entities(*fields).all()
 
     def get_applicant_by_id(self,applicant_id):
         return Applicants.query.get(applicant_id)
