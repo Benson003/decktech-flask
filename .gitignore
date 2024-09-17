@@ -6,3 +6,4 @@
 /migrations/
 /models/__pycache__
 /routes/__pycache__
+/server.log
