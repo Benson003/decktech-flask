@@ -6,6 +6,8 @@ from flask import session
 
 db = SQLAlchemy()
 migrate = Migrate()
+server_log = open("server.log","a")
+server_log.write("Server Log Started \n")
 
 def create_app():
     app = Flask(__name__)

@@ -7,6 +7,7 @@ from flask import abort
 from models import data_handler as dl
 from app import session
 from models.data_handler import bcrypt
+from app import server_log as file
 
 
 
@@ -24,6 +25,7 @@ admin_templates = {
             None:"./admin/index.html",
             **{t: f"./admin/{t}.html" for t in ["login","signupadmin","logout"]}
         }
+
 
 class Careers(MethodView):
 
@@ -49,30 +51,38 @@ class Careers(MethodView):
 
         handler = handlers.get(link_type, lambda *args: abort(404))
         return handler(fullname , role)
+    def summit_log(self,job_type):
+        file.write(f"Job request recieved \n Job type: '{job_type}'\n")
+
 
     def handleIntership(self,fullname,role):
         applicants = dl.Applicants()
         applicants.add_applicant(fullname=fullname,role="internship")
+        self.summit_log("intern")
         return redirect(url_for("career_type",link_type="thank_you"))
 
     def handleRemote(self,fullname,role):
         applicants = dl.Applicants()
         applicants.add_applicant(fullname=fullname,role="remote")
+        self.summit_log("remote")
         return redirect(url_for("career_type",link_type="thank_you"))
 
     def handleHybrid(self,fullname,role):
         applicants = dl.Applicants()
         applicants.add_applicant(fullname=fullname,role="hybrid")
+        self.summit_log("hybrid")
         return redirect(url_for("career_type",link_type="thank_you"))
 
     def handleOnsite(self,fullname,role):
         applicants = dl.Applicants()
         applicants.add_applicant(fullname=fullname,role="onsite")
+        self.summit_log("on-site")
         return redirect(url_for("career_type",link_type="thank_you"))
 
     def handleOthers(self,fullname,role):
         applicants = dl.Applicants()
         applicants.add_applicant(fullname=fullname,role="others")
+        self.summit_log("others")
         return redirect(url_for("career_type",link_type="thank_you"))
 
 
@@ -90,19 +100,19 @@ class Admin(MethodView):
 
     def get(self, link_type=None):
         # Debugging output
-        print(f"Session username: {session.get('username')}")
-        print(f"Received link_type: '{link_type}'")
+        file.write(f"Session username: {session.get('username')}\n")
+        file.write(f"Received link_type: '{link_type}'\n")
 
 
 
         # Redirect to login if user is not signed in and link_type is "index"
         if link_type == "logout" and session.get("username"):
             session.pop("username")
-            print(session)
+            file.write("{session}\n")
             return redirect(url_for("admin_links",link_type="logout"))
 
         if session.get("username") is None and link_type == None:
-            print("Redirecting to login")
+            print("Redirecting to login\n")
             return redirect(url_for("admin_links", link_type="login"))
 
 
@@ -120,9 +130,10 @@ class Admin(MethodView):
 
     def post(self, link_type=None):
         # Debugging output
-        print(f"Received link_type: {link_type}")
+        
+        file.write(f"Received link_type: {link_type}\n")
+
         self.form_data = request.form.to_dict()
-        print(self.form_data)
 
         handlers = {
             "signupadmin":self.signupadmin,
@@ -133,6 +144,7 @@ class Admin(MethodView):
 
     def signupadmin(self):
         dl.User().create_user(**self.form_data,isAdmin=True)
+        file.write("Created a new user.\n")
         return redirect(url_for("admin_links", link_type="login"))
 
     def login(self):
@@ -141,9 +153,6 @@ class Admin(MethodView):
 
         for user in users:
             usernames.append(user.username)
-
-        print(usernames)
-        print(user)
 
         if self.form_data['username']:
             user = dl.User().get_specfic_user(self.form_data['username'])
@@ -154,16 +163,16 @@ class Admin(MethodView):
                 if isAdmin:
                 # Set the session for the logged-in user
                     session['username'] = user.username
-                    print(f"Logged in as: {user.username}")
+                    file.write(f"Logged in as: {user.username}\n")
                     return redirect(url_for("admin_links",link_type="/"))
                 else:
-                    print("Not An Admin")
+                    file.write("Not An Admin\n")
                     return redirect(url_for("admin_links", link_type="login"))
             else:
-                print("Password incorrect.")
+                file.write("Password incorrect.\n")
                 return redirect(url_for("admin_links", link_type="login"))
         else:
-            print("Username not found")
+            file.write("Username not found.\n")
             return redirect(url_for("admin_links",link_type= "login"))
 
 

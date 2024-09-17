@@ -1,0 +1,21 @@
+Server Log clear 
+Server StartedServer StartedServer StartedDatabase ReadySession username: None
+Received link_type: 'login'
+Received link_type: login
+Not An Admin
+Session username: None
+Received link_type: 'login'
+Received link_type: login
+Password incorrect.
+Session username: None
+Received link_type: 'login'
+Received link_type: login
+Logged in as: emmanuel
+Session username: emmanuel
+Received link_type: 'None'
+Session username: emmanuel
+Received link_type: 'logout'
+{session}
+Session username: None
+Received link_type: 'logout'
+Server StartedDatabase Ready
