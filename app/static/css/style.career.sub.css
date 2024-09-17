@@ -21,10 +21,11 @@ label {
     margin: 10px 0 5px;
 }
 input[type="text"] {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    margin-bottom: 5rem;
 }
 input[type="submit"] {
     width: 100%;
@@ -39,3 +40,7 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #0056b3;
 }
+a {
+    text-decoration:none; /* No underline on links */
+    color:black; /* Black text color*/
+ }

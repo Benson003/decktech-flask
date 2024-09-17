@@ -1,10 +1,10 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, auto);
-    grid-gap: 10px;
+    grid-template-columns: repeat(1, 90%);
+    grid-gap: 5px;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 50vh;
   }
   
   .grid-item {
@@ -13,8 +13,7 @@
     border-radius: 20px; /* Rounded corners */
     text-align: center; /* Center text */
     box-shadow: 2px 2px #888888; /* Shadow effect */
-}
-
+  }
 a {
    text-decoration:none; /* No underline on links */
    color:black; /* Black text color*/

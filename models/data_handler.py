@@ -23,7 +23,7 @@ class User():
 
 
 
-    def create_user(self,username,first_name,last_name,password):
+    def create_user(self,username,first_name,last_name,password,isAdmin=False):
 
         hashed_password = self.paswword_hashing(password=password)
 
@@ -31,7 +31,8 @@ class User():
                             username=username,
                              first_name=first_name,
                              last_name=last_name,
-                             password=hashed_password
+                             password=hashed_password,
+                             isAdmin=isAdmin
                              )
 
         db.session.add(person)

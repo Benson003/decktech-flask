@@ -12,5 +12,9 @@
     border-radius: 20px; /* Rounded corners */
     text-align: center; /* Center text */
     box-shadow: 2px 2px #888888; /* Shadow effect */
-    font-size: 1.5em; /* Larger text */
+    font-size: 5.5em; /* Larger text */
   }
+  a {
+    text-decoration:none; /* No underline on links */
+    color:black; /* Black text color*/
+ }

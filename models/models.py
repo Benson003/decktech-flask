@@ -11,13 +11,15 @@ class User(db.Model):
     password = db.Column(db.String(256))
     bio = db.Column(db.String(256))
     blog = db.relationship('Blog', backref = "user")
+    isAdmin = db.Column(db.Boolean())
 
 
-    def __init__(self,username,first_name,last_name,password=None):
+    def __init__(self,username,first_name,last_name,password=None,isAdmin=False):
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
         self.password = password
+        self.isAdmin = isAdmin
 
 
 
@@ -46,10 +48,10 @@ class Projects(db.Model):
         self.content = content
 
 
-    
+
 
 class JobType(enum.Enum):
-    
+
     INTERNSHIP = "INTRENSHIP"
     ONSITE = "ONSITE"
     REMOTE = "REMOTE"
@@ -66,6 +68,3 @@ class Applicants(db.Model):
     def __init__(self,fullname,role):
         self.fullname = fullname
         self.role = role
-
-
-    

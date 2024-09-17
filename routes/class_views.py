@@ -9,6 +9,7 @@ from app import session
 from models.data_handler import bcrypt
 
 
+
 career_templates =  {
             None:"./main_pages/careers_pages/careers.html",
             **{t: f"main_pages/careers_pages/{t}.html" for t in ["internship", "remote", "hybrid", "onsite", "others","thank_you"]}
@@ -95,14 +96,26 @@ class Admin(MethodView):
 
 
         # Redirect to login if user is not signed in and link_type is "index"
+        if link_type == "logout" and session.get("username"):
+            session.pop("username")
+            print(session)
+            return redirect(url_for("admin_links",link_type="logout"))
+
         if session.get("username") is None and link_type == None:
             print("Redirecting to login")
             return redirect(url_for("admin_links", link_type="login"))
+
+
+
 
         # Process link_type and render the appropriate template
         templates = admin_templates
         link_type = link_type.strip().lower().rstrip("/") if link_type else None
         template = templates.get(link_type)
+
+
+
+
         return render_template(template) if template else abort(404)
 
     def post(self, link_type=None):
@@ -114,13 +127,12 @@ class Admin(MethodView):
         handlers = {
             "signupadmin":self.signupadmin,
             "login":self.login,
-            "logout":self.logout,
             }
         handler = handlers.get(link_type)
         return handler()
 
     def signupadmin(self):
-        dl.User().create_user(**self.form_data)
+        dl.User().create_user(**self.form_data,isAdmin=True)
         return redirect(url_for("admin_links", link_type="login"))
 
     def login(self):
@@ -133,25 +145,26 @@ class Admin(MethodView):
         print(usernames)
         print(user)
 
-        if self.form_data['username'] in usernames:
+        if self.form_data['username']:
             user = dl.User().get_specfic_user(self.form_data['username'])
+            isAdmin = user.isAdmin
             password = self.form_data["password"].encode('utf-8')
             verify = bcrypt.checkpw(password, user.password)
-            if verify == True:
+            if verify:
+                if isAdmin:
                 # Set the session for the logged-in user
-                session['username'] = user.username
-                print(f"Logged in as: {user.username}")
-                return redirect(url_for("admin_links",link_type="/"))
+                    session['username'] = user.username
+                    print(f"Logged in as: {user.username}")
+                    return redirect(url_for("admin_links",link_type="/"))
+                else:
+                    print("Not An Admin")
+                    return redirect(url_for("admin_links", link_type="login"))
             else:
                 print("Password incorrect.")
                 return redirect(url_for("admin_links", link_type="login"))
         else:
             print("Username not found")
             return redirect(url_for("admin_links",link_type= "login"))
-
-    def logout(self):
-        session.pop()
-        return render_template("admin/logout.html")
 
 
 
